@@ -9,7 +9,7 @@ const devServer = (isDev) => !isDev ? {} : {
     devServer: {
       open: true,
       port: 8080,
-      contentBase: path.join(__dirname, 'public'),
+      contentBase: path.join(__dirname, 'src'),
     },
   };
   
@@ -19,7 +19,7 @@ const devServer = (isDev) => !isDev ? {} : {
     mode: development ? 'development' : 'production',
     devtool: development ? 'inline-source-map' : false,
     entry: {
-      main: './src/index.ts',
+      main: './src/index.js',
     },
     output: {
       filename: '[name].[contenthash].js',
@@ -28,11 +28,11 @@ const devServer = (isDev) => !isDev ? {} : {
     },
   module: {
     rules: [
-      {
+      /*{
         test: /\.[tj]s?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
-      },
+      },*/
       {
         test: /\.(?:ico|gif|png|svg|jpg|jpeg)$/i,
         type: 'assets/resource',
