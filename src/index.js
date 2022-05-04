@@ -6,8 +6,8 @@ function setLocalStorage() {
 window.addEventListener('beforeunload', setLocalStorage);
 function getLocalStorage() {
   if (localStorage.getItem("lang")) {
-    let langSt = localStorage.getItem('lang');
-    lang = changeLanguage(langSt)
+    let lang = localStorage.getItem('lang');
+      changeLanguage(lang)
   }
 }
 window.addEventListener('load', getLocalStorage);
@@ -144,7 +144,7 @@ const rusSmall = [
   ['ControlLeft', 'CtrlL'],
   ['MetaLeft', 'Win'],
   ['AltLeft', 'AltL'],
-  [32, ''],
+  ['Space', '&nbsp;'],
   ['AltRight', 'AltR'],
   ['ControlRight', 'CtrlR'],
 ];
@@ -209,10 +209,11 @@ const enSmall = [
   ['ControlLeft', 'CtrlL'],
   ['MetaLeft', 'Win'],
   ['AltLeft', 'AltL'],
-  [32, ''],
+  ['Space', '&nbsp;'],
   ['AltRight', 'AltR'],
   ['ControlRight', 'CtrlR'],
 ];
+
 
 const body = document.body;
 const wrapper = document.createElement('div');
@@ -304,6 +305,7 @@ for (let i = 0; i < rowButton; i++) {
     }
   }
 }
+const letters = document.querySelectorAll('.button-key__span__letter');
 function changeLanguage(lang) {
   const allKeys = document.querySelectorAll('.button-key__span');
   const allKeys2 = document.querySelectorAll('.button-key__spanUp');
@@ -332,15 +334,15 @@ function changeLanguage(lang) {
       break;
     }
   }
-  if (lang === 'rus') {
+  /*if (lang === 'rus') {
     return lang = 'en';
   }
   if (lang === 'en'){
     return lang = 'rus';
-  }
+  }*/
 }
 function keyDownListener(event) {
-  
+  event.preventDefault();
   let specialKey = {
     Backspace: 'Backspace',
     Tab: 'Tab',
@@ -351,7 +353,7 @@ function keyDownListener(event) {
     ControlLeft: 'CtrlL',
     MetaLeft: 'Win',
     AltLeft: 'AltL',
-    Space: '',
+    Space: '&nbsp;',
     AltRight: 'AltR',
     ControlRight: 'CtrlR',
     Enter: 'Enter',
@@ -362,20 +364,27 @@ function keyDownListener(event) {
   };
 
   if (specialKey[`${event.code}`]) {
-    document
-      .querySelector(`.button-key[data-id="${event.code}"]`)
-      .classList.add('active_button');
+    document.querySelector(`.button-key[data-id="${event.code}"]`).classList.add('active_button');
     if (event.code === 'AltLeft') {
       document.onkeyup = function (el) {
+       
         if (el.code === 'ShiftLeft') {
-          lang = changeLanguage(lang);
+          document.querySelector(`.button-key[data-id="${el.code}"]`)
+      .classList.add('active_button');
+      if (lang === 'rus') {
+        lang = 'en';
+      }
+      else if (lang === 'en'){
+        lang = 'rus';
+      }
+          changeLanguage(lang);
         } else {
           window.removeEventListener('keydown', keyDownListener);
         }
       };
     }
     if (event.code === 'CapsLock') {
-      const letters = document.querySelectorAll('.button-key__span__letter');
+      
       letters.forEach(function (element) {
         element.classList.toggle("capslock");
       })
@@ -396,32 +405,77 @@ function keyDownListener(event) {
         textarea.innerHTML =  textarea.innerHTML.slice(0, textarea.selectionStart)+  textarea.innerHTML.slice(textarea.selectionStart+1)
         textarea.selectionStart = corret;
 
+    }
+    if (event.code === 'Enter') {
+      corret =textarea.selectionStart;
+      textarea.innerHTML = textarea.innerHTML.slice(0, textarea.selectionStart) +  '\n' +  textarea.innerHTML.slice(textarea.selectionStart);
+      textarea.selectionStart = corret+1;
     } 
+    if (event.code === 'Tab') {
+      corret =textarea.selectionStart;
+      textarea.innerHTML = textarea.innerHTML.slice(0, textarea.selectionStart) +  '\t' +  textarea.innerHTML.slice(textarea.selectionStart);
+      textarea.selectionStart = corret+1;
+    } 
+    if (event.code === 'Space') {
+      corret =textarea.selectionStart;
+      textarea.innerHTML = textarea.innerHTML.slice(0, textarea.selectionStart) +  ' ' +  textarea.innerHTML.slice(textarea.selectionStart);
+      textarea.selectionStart = corret+1;
+    }
+    if (event.code === 'ShiftLeft') {
+      letters.forEach(function (element) {
+        element.classList.toggle("capslock");
+      })
+      document.onkeyup = function (el) {
+        window.removeEventListener('keydown', keyDownListener);
+        let letter = document.querySelector(
+          `.button-key[data-id="${el.keyCode}"] .button-key__span`
+        );
+        let toUp = letter.innerHTML;
+        corret =textarea.selectionStart;
+        textarea.innerHTML = textarea.innerHTML.slice(0, textarea.selectionStart) + toUp +  textarea.innerHTML.slice(textarea.selectionStart);
+    textarea.selectionStart = corret+1;
+    letters.forEach(function (element) {
+      element.classList.toggle("capslock");
+    })
+      }
+    }
   } else {
     document
       .querySelector(`.button-key[data-id="${event.keyCode}"]`)
       .classList.add('active_button');
-      
-    const letter = document.querySelector(
+    let letter = document.querySelector(
       `.button-key[data-id="${event.keyCode}"] .button-key__span`
     );
-    console.log(letter.innerHTML);
-    console.log(textarea.innerHTML);
-    textarea.innerHTML += letter.innerHTML;
+    corret =textarea.selectionStart;
+    let toUp = letter.innerHTML;
+    if(letter.classList.contains("capslock")){     
+      toUp = toUp.toUpperCase();
+    }
+    textarea.innerHTML = textarea.innerHTML.slice(0, textarea.selectionStart) + toUp +  textarea.innerHTML.slice(textarea.selectionStart);
+    textarea.selectionStart = corret+1;
   }
 }
 
 window.addEventListener('keydown', keyDownListener);
-window.addEventListener('keyup', function () {
+window.addEventListener('keyup', function (event) {
   document.querySelectorAll('.button-key').forEach(function (el) {
     el.classList.remove('active_button');
   });
   window.addEventListener('keydown', keyDownListener);
+  if(event.code === 'ShiftLeft'){
+    letters.forEach(function (element) {
+      element.classList.toggle("capslock");
+    })
+  }
 });
 
-textarea.addEventListener('blur', function (event) {
-  event.preventDefault();
-  window.addEventListener('keydown', keyDownListener);
-}, false)
 
+
+textarea.addEventListener('focus', function () {
+  corret =textarea.selectionStart;
+})
+textarea.addEventListener('blur', function (event) {
+  window.addEventListener('keydown', keyDownListener);
+  event.preventDefault();
+}, false)
 //document.querySelector('.button-key__span').style.textTransform  = 'uppercase';

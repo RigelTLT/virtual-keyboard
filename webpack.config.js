@@ -57,6 +57,7 @@ const devServer = (isDev) => !isDev ? {} : {
     }),
     new HTML_WEBPACK_PLUGIN({
       template: './src/index.html',
+      favicon: "./src/img/keyboard-64.png"
     }),
     new CleanWebpackPlugin({ cleanStaleWebpackAsset: false }),
   ],
