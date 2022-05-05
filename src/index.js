@@ -11,81 +11,6 @@ function getLocalStorage() {
   }
 }
 window.addEventListener('load', getLocalStorage);
-//англ мал
-
-//[33, 49, 64, 50, 35, 51, 36, 52, 37, 53, 94, 54, 38, 55, 42, 56, 40, 57, 41, 48, 95, 45, 43, 61]
-//[[96, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 45, 61, 113, 119, 101, 114, 116, 121, 117, 105, 111, 112, 91, 93, 97, 115, 100, 102, 103, 104, 106, 107, 108, 59, 39, 92, 122, 120, 99, 118, 98, 110, 109, 44, 46, 47]
-//АНГЛ БОЛЬ
-//[96, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 45, 61, 81, 87, 69, 82, 84, 89, 85, 73, 79, 80, 91, 93, 65, 83, 68, 70, 71, 72, 74, 75, 76, 59, 39, 92, 90, 88, 67, 86, 66, 78, 77, 44, 46, 47]
-//русс мал
-//[1105, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 45, 61]
-//[1105, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 45, 61, 1081, 1094, 1091, 1082, 1077, 1085, 1075, 1096, 1097, 1079, 1093, 1098, 1092, 1099, 1074, 1072, 1087, 1088, 1086, 1083, 1076, 1078, 1101, 92, 1103, 1095, 1089, 1084, 1080, 1090, 1100, 1073, 1102, 46]
-//РУС БОЛЬ
-//[1025, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 45, 61]
-//[1105, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 45, 61, 1049, 1062, 1059, 1050, 1045, 1053, 1043, 1064, 1065, 1047, 1061, 1066, 1060, 1067, 1042, 1040, 1055, 1056, 1054, 1051, 1044, 1046, 1069, 92, 1071, 1063, 1057, 1052, 1048, 1058, 1068, 1041, 1070, 46]
-
-/*const rusBig = [
-  1105,
-  ['!', '1'],
-  ['"', '2'],
-  ['№', '3'],
-  [';', '4'],
-  ['%', '5'],
-  [':', '6'],
-  ['?', '7'],
-  ['*', '8'],
-  ['(', '9'],
-  [')', '0'],
-  ['_', '-'],
-  ['+', '='],
-  'Backspace',
-  'Tab',
-  1049,
-  1062,
-  1059,
-  1050,
-  1045,
-  1053,
-  1043,
-  1064,
-  1065,
-  1047,
-  1061,
-  1066,
-  1060,
-  'Del',
-  'Caps',
-  1067,
-  1042,
-  1040,
-  1055,
-  1056,
-  1054,
-  1051,
-  1044,
-  1046,
-  1069,
-  92,
-  'Enter',
-  'ShiftL',
-  1071,
-  1063,
-  1057,
-  1052,
-  1048,
-  1058,
-  1068,
-  1041,
-  1070,
-  46,
-  'ShiftR',
-  'CtrlL',
-  'Win',
-  'AltL',
-  '',
-  'AltR',
-  'CtrlR',
-];*/
 const rusSmall = [
   [192, 1105],
   [49, [33, 49]],
@@ -148,9 +73,6 @@ const rusSmall = [
   ['AltRight', 'AltR'],
   ['ControlRight', 'CtrlR'],
 ];
-//[33, 49, 64, 50, 35, 51, 36, 52, 37, 53, 94, 54, 38, 55, 42, 56, 40, 57, 41, 48, 95, 45, 43, 61]
-//[[96, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 45, 61, 113, 119, 101, 114, 116, 121, 117, 105, 111, 112, 91, 93, 97, 115, 100, 102, 103, 104, 106, 107, 108, 59, 39, 92, 122, 120, 99, 118, 98, 110, 109, 44, 46, 47]
-
 const enSmall = [
   [192, 96],
   [49, [33, 49]],
@@ -218,15 +140,30 @@ const body = document.body;
 const wrapper = document.createElement('div');
 wrapper.classList.add('wrapper');
 body.append(wrapper);
-const texareaDiv = document.createElement('div');
+const texareaDiv = document.createElement('header');
 texareaDiv.classList.add('text-block');
 wrapper.append(texareaDiv);
+const titleDiv = document.createElement('h1');
+titleDiv.innerHTML = "Virtual Keyboard";
+titleDiv.classList.add('title');
+texareaDiv.append(titleDiv);
 const textarea = document.createElement('textarea');
 textarea.classList.add('text-block__textarea');
 texareaDiv.append(textarea);
-const keyboard = document.createElement('div');
+const keyboard = document.createElement('main');
 keyboard.classList.add('keyboard');
 wrapper.append(keyboard);
+const footer = document.createElement('footer');
+footer.classList.add('footer');
+wrapper.append(footer);
+const footerp = document.createElement('p');
+footerp.innerHTML = "To switch the language, the combination is: left alt + left Shift.";
+footerp.classList.add('footer-p');
+footer.append(footerp);
+const footerp2 = document.createElement('p');
+footerp2.innerHTML = "The keyboard was created in the Windows operating system.";
+footerp2.classList.add('footer-p');
+footer.append(footerp2);
 
 let arrLang = [];
 if (lang === 'rus') {
@@ -407,7 +344,6 @@ function clickListener(event) {
       button = event.target;
     }
   }
-  console.log(target, button);
   button.classList.add('active_button');
   const specialKeyArr = Object.values(specialKey);
 

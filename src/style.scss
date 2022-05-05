@@ -1,5 +1,6 @@
-$bodyColor: bisque;
+$bodyColor: #3b5a71;
 $backgroundKeyboard: #3b5a71;
+$font: 'Ubuntu', sans-serif;
 body{
     background-color: $bodyColor;
 }
@@ -7,12 +8,29 @@ body{
     display: grid;
     justify-content: center;
     align-items: center;
-    grid-template-rows: 200px 350px;
+    grid-template-rows: 250px 350px;
     grid-auto-columns: 80%;
+}
+.text-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.title{
+    font-family: $font;
 }
 .text-block__textarea{
     width: 100%;
     height: 10rem;
+    font-family: $font;
+    font-size: 18px;
+}
+.footer{
+    font-family: $font;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .keyboard{
     background-color: $backgroundKeyboard;
@@ -25,7 +43,7 @@ body{
     padding: 10px;
     color: white;
     font-size: larger;
-    font-family: serif;
+    font-family: $font;
 }
 .button-key{
     background-color: #6386a1;
@@ -35,6 +53,7 @@ body{
     justify-content: center;
     align-items: center;
     border-radius: 10px;
+    transition: 0.3s;
 }
 .button-key:hover{
     background-color: #9bb2c4;
