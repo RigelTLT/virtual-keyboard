@@ -312,9 +312,9 @@ function clickListener(event) {
     if (
       document.querySelector(`.button-key__span`).classList.contains('capslock')
     ) {
-      target = event.path[1].children[0].innerHTML;
+      target = event.path[1].children[0].textContent;
     } else {
-      target = event.path[1].children[1].innerHTML;
+      target = event.path[1].children[1].textContent;
     }
 
     button = event.path[1];
@@ -322,14 +322,14 @@ function clickListener(event) {
     if (
       document.querySelector(`.button-key__span`).classList.contains('capslock')
     ) {
-      target = event.path[1].children[0].innerHTML;
+      target = event.path[1].children[0].textContent;
     } else {
-      target = event.target.innerHTML;
+      target = event.target.textContent;
     }
     button = event.path[1];
   } else {
     if (event.target.children[0].classList.contains('button-key__span')) {
-      target = event.target.children[0].innerHTML;
+      target = event.target.children[0].textContent;
       button = event.target;
     } else {
       if (
@@ -337,9 +337,9 @@ function clickListener(event) {
           .querySelector(`.button-key__span`)
           .classList.contains('capslock')
       ) {
-        target = event.target.children[0].innerHTML;
+        target = event.target.children[0].textContent;
       } else {
-        target = event.target.children[1].innerHTML;
+        target = event.target.children[1].textContent;
       }
       button = event.target;
     }
