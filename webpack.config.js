@@ -23,7 +23,7 @@ const devServer = (isDev) => !isDev ? {} : {
     },
     output: {
       filename: '[name].[contenthash].js',
-      path: path.resolve(__dirname, 'dist'),
+      path: path.resolve(__dirname, 'docs'),
       assetModuleFilename: 'assets/[hash][ext]',
     },
   module: {
