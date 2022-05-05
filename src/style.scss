@@ -34,6 +34,7 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    border-radius: 10px;
 }
 .button-key:hover{
     background-color: #9bb2c4;
@@ -81,10 +82,12 @@ body{
     border: 0;
 }
 .active_button{
-    background-color: green;
+    background-color: green !important;
+    border-radius: 20px;
 }
 .active_button_shift{
-    background-color: green;
+    background-color: green !important;
+    border-radius: 20px;
 }
 .capslock{
     text-transform: uppercase;

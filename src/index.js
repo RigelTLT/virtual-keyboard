@@ -202,9 +202,9 @@ const enSmall = [
   [66, 98],
   [78, 110],
   [77, 109],
-  [188,  44],
-  [190,  46],
-  [191,  47],
+  [188, 44],
+  [190, 46],
+  [191, 47],
   ['ShiftRight', 'ShiftR'],
   ['ControlLeft', 'CtrlL'],
   ['MetaLeft', 'Win'],
@@ -326,11 +326,19 @@ for (let i = 0; i < rowButton; i++) {
   }
 }
 const letters = document.querySelectorAll('.button-key__span__letter');
-const keyTilda = document.querySelector('.button-key[data-id="192"] .button-key__span');
-const keyСomma = document.querySelector('.button-key[data-id="188"] .button-key__span');
-const keyPoint = document.querySelector('.button-key[data-id="190"] .button-key__span');
-const keySlash = document.querySelector('.button-key[data-id="191"] .button-key__span');
-
+const keyTilda = document.querySelector(
+  '.button-key[data-id="192"] .button-key__span'
+);
+const keyСomma = document.querySelector(
+  '.button-key[data-id="188"] .button-key__span'
+);
+const keyPoint = document.querySelector(
+  '.button-key[data-id="190"] .button-key__span'
+);
+const keySlash = document.querySelector(
+  '.button-key[data-id="191"] .button-key__span'
+);
+const buttonKey = document.querySelectorAll('.button-key');
 
 function changeLanguage(lang) {
   const allKeys = document.querySelectorAll('.button-key__span');
@@ -361,6 +369,166 @@ function changeLanguage(lang) {
     }
   }
 }
+function clickListener(event) {
+  let target, button;
+  if (event.target.classList.contains('button-key__spanUp')) {
+    if (
+      document.querySelector(`.button-key__span`).classList.contains('capslock')
+    ) {
+      target = event.path[1].children[0].innerHTML;
+    } else {
+      target = event.path[1].children[1].innerHTML;
+    }
+
+    button = event.path[1];
+  } else if (event.target.classList.contains('button-key__span')) {
+    if (
+      document.querySelector(`.button-key__span`).classList.contains('capslock')
+    ) {
+      target = event.path[1].children[0].innerHTML;
+    } else {
+      target = event.target.innerHTML;
+    }
+    button = event.path[1];
+  } else {
+    if (event.target.children[0].classList.contains('button-key__span')) {
+      target = event.target.children[0].innerHTML;
+      button = event.target;
+    } else {
+      if (
+        document
+          .querySelector(`.button-key__span`)
+          .classList.contains('capslock')
+      ) {
+        target = event.target.children[0].innerHTML;
+      } else {
+        target = event.target.children[1].innerHTML;
+      }
+      button = event.target;
+    }
+  }
+  console.log(target, button);
+  button.classList.add('active_button');
+  const specialKeyArr = Object.values(specialKey);
+
+  if (specialKeyArr.includes(target)) {
+    if (target === 'AltL' || target === 'AltR') {
+      button.classList.toggle('active_button_shift');
+    }
+    if (target === 'ShiftL' || target === 'ShiftR') {
+      const altL = document.querySelector('.button__i-4__j-2');
+      const altR = document.querySelector('.button__i-4__j-4');
+      if (
+        altL.classList.contains('active_button_shift') ||
+        altR.classList.contains('active_button_shift')
+      ) {
+        let changeLang = lang;
+
+        if (changeLang === 'rus') {
+          lang = 'en';
+        } else if (changeLang === 'en') {
+          lang = 'rus';
+        }
+        changeLanguage(lang);
+      } else {
+        button.classList.toggle('active_button_shift');
+        letters.forEach(function (element) {
+          element.classList.toggle('capslock');
+        });
+        if (lang === 'rus') {
+          if (button.classList.contains('active_button_shift')) {
+            keyTilda.innerHTML = '~';
+            keyСomma.innerHTML = '<';
+            keyPoint.innerHTML = '>';
+            keySlash.innerHTML = '?';
+          } else {
+            keyTilda.innerHTML = '`';
+            keyСomma.innerHTML = ',';
+            keyPoint.innerHTML = '.';
+            keySlash.innerHTML = '/';
+          }
+        }
+      }
+    }
+    if (target === 'Caps') {
+      letters.forEach(function (element) {
+        element.classList.toggle('capslock');
+      });
+      if (lang === 'rus') {
+        if (
+          document
+            .querySelector(`.button-key__span`)
+            .classList.contains('capslock')
+        ) {
+          keyTilda.innerHTML = '~';
+          keyСomma.innerHTML = '<';
+          keyPoint.innerHTML = '>';
+          keySlash.innerHTML = '?';
+        } else {
+          keyTilda.innerHTML = '`';
+          keyСomma.innerHTML = ',';
+          keyPoint.innerHTML = '.';
+          keySlash.innerHTML = '/';
+        }
+      }
+    }
+    if (target === 'Backspace') {
+      if (textarea.selectionStart === 0 && textarea.textContent) {
+        textarea.textContent = textarea.textContent.slice(0, -1);
+      } else {
+        corret = textarea.selectionStart;
+        textarea.textContent =
+          textarea.textContent.slice(0, textarea.selectionStart - 1) +
+          textarea.textContent.slice(textarea.selectionStart);
+        textarea.selectionStart = corret - 1;
+      }
+    }
+    if (target === 'Del') {
+      corret = textarea.selectionStart;
+      textarea.textContent =
+        textarea.textContent.slice(0, textarea.selectionStart) +
+        textarea.textContent.slice(textarea.selectionStart + 1);
+      textarea.selectionStart = corret;
+    }
+    if (target === 'Enter') {
+      corret = textarea.selectionStart;
+      textarea.textContent =
+        textarea.textContent.slice(0, textarea.selectionStart) +
+        '\n' +
+        textarea.textContent.slice(textarea.selectionStart);
+      textarea.selectionStart = corret + 1;
+    }
+    if (target === 'Tab') {
+      corret = textarea.selectionStart;
+      textarea.textContent =
+        textarea.textContent.slice(0, textarea.selectionStart) +
+        '\t' +
+        textarea.textContent.slice(textarea.selectionStart);
+      textarea.selectionStart = corret + 1;
+    }
+    if (target === '&nbsp;') {
+      corret = textarea.selectionStart;
+      textarea.textContent =
+        textarea.textContent.slice(0, textarea.selectionStart) +
+        ' ' +
+        textarea.textContent.slice(textarea.selectionStart);
+      textarea.selectionStart = corret + 1;
+    }
+  } else {
+    corret = textarea.selectionStart;
+    let toUp = target;
+    if (
+      document.querySelector(`.button-key__span`).classList.contains('capslock')
+    ) {
+      toUp = toUp.toUpperCase();
+    }
+    textarea.textContent =
+      textarea.textContent.slice(0, textarea.selectionStart) +
+      toUp +
+      textarea.textContent.slice(textarea.selectionStart);
+    textarea.selectionStart = corret + 1;
+  }
+}
 function keyDownListener(event) {
   event.preventDefault();
   if (specialKey[`${event.code}`]) {
@@ -370,72 +538,109 @@ function keyDownListener(event) {
 
     if (event.code === 'AltLeft' || event.code === 'AltRight') {
       flagAlt = true;
-      console.log(textarea.selectionStart);
     }
     if (event.code === 'CapsLock') {
       letters.forEach(function (element) {
         element.classList.toggle('capslock');
       });
+      if (lang === 'rus') {
+        if (
+          document
+            .querySelector(`.button-key__span`)
+            .classList.contains('capslock')
+        ) {
+          keyTilda.innerHTML = '~';
+          keyСomma.innerHTML = '<';
+          keyPoint.innerHTML = '>';
+          keySlash.innerHTML = '?';
+        } else {
+          keyTilda.innerHTML = '`';
+          keyСomma.innerHTML = ',';
+          keyPoint.innerHTML = '.';
+          keySlash.innerHTML = '/';
+        }
+      }
       window.removeEventListener('keydown', keyDownListener);
     }
     if (event.code === 'Backspace') {
-      if (textarea.selectionStart === 0 && textarea.innerHTML) {
-        textarea.innerHTML = textarea.innerHTML.slice(0, -1);
+      if (textarea.selectionStart === 0 && textarea.textContent) {
+        textarea.textContent = textarea.textContent.slice(0, -1);
       } else {
         corret = textarea.selectionStart;
-        textarea.innerHTML =
-          textarea.innerHTML.slice(0, textarea.selectionStart - 1) +
-          textarea.innerHTML.slice(textarea.selectionStart);
+        textarea.textContent =
+          textarea.textContent.slice(0, textarea.selectionStart - 1) +
+          textarea.textContent.slice(textarea.selectionStart);
         textarea.selectionStart = corret - 1;
       }
     }
     if (event.code === 'Delete') {
       corret = textarea.selectionStart;
-      textarea.innerHTML =
-        textarea.innerHTML.slice(0, textarea.selectionStart) +
-        textarea.innerHTML.slice(textarea.selectionStart + 1);
+      textarea.textContent =
+        textarea.textContent.slice(0, textarea.selectionStart) +
+        textarea.textContent.slice(textarea.selectionStart + 1);
       textarea.selectionStart = corret;
     }
     if (event.code === 'Enter') {
       corret = textarea.selectionStart;
-      textarea.innerHTML =
-        textarea.innerHTML.slice(0, textarea.selectionStart) +
+      textarea.textContent =
+        textarea.textContent.slice(0, textarea.selectionStart) +
         '\n' +
-        textarea.innerHTML.slice(textarea.selectionStart);
+        textarea.textContent.slice(textarea.selectionStart);
       textarea.selectionStart = corret + 1;
     }
     if (event.code === 'Tab') {
       corret = textarea.selectionStart;
-      textarea.innerHTML =
-        textarea.innerHTML.slice(0, textarea.selectionStart) +
+      textarea.textContent =
+        textarea.textContent.slice(0, textarea.selectionStart) +
         '\t' +
-        textarea.innerHTML.slice(textarea.selectionStart);
+        textarea.textContent.slice(textarea.selectionStart);
       textarea.selectionStart = corret + 1;
     }
     if (event.code === 'Space') {
       corret = textarea.selectionStart;
-      textarea.innerHTML =
-        textarea.innerHTML.slice(0, textarea.selectionStart) +
+      textarea.textContent =
+        textarea.textContent.slice(0, textarea.selectionStart) +
         ' ' +
-        textarea.innerHTML.slice(textarea.selectionStart);
+        textarea.textContent.slice(textarea.selectionStart);
       textarea.selectionStart = corret + 1;
     }
-    if ((event.code === 'ShiftLeft' || event.code === 'ShiftRight') && !flagShift) {
+    if (
+      (event.code === 'ShiftLeft' || event.code === 'ShiftRight') &&
+      !flagShift
+    ) {
       letters.forEach(function (element) {
         element.classList.toggle('capslock');
       });
-      if(lang === 'rus') {
-      keyTilda.innerHTML = '~';
-      keyСomma.innerHTML = '<';
-      keyPoint.innerHTML = '>';
-      keySlash.innerHTML = '?';
+      if (lang === 'rus') {
+        keyTilda.innerHTML = '~';
+        keyСomma.innerHTML = '<';
+        keyPoint.innerHTML = '>';
+        keySlash.innerHTML = '?';
       }
       document
-      .querySelector(`.button-key[data-id="${event.code}"]`).classList.add('active_button_shift');
+        .querySelector(`.button-key[data-id="${event.code}"]`)
+        .classList.add('active_button_shift');
       flagShift = true;
-      if(flagAlt){
+      if (flagAlt) {
         shiftAlt(event);
-      } 
+      }
+    }
+    if (
+      event.code === 'ArrowUp' ||
+      event.code === 'ArrowLeft' ||
+      event.code === 'ArrowDown' ||
+      event.code === 'ArrowRight'
+    ) {
+      let letter = document.querySelector(
+        `.button-key[data-id="${event.code}"] .button-key__span`
+      );
+      corret = textarea.selectionStart;
+      let toUp = letter.textContent;
+      textarea.textContent =
+        textarea.textContent.slice(0, textarea.selectionStart) +
+        toUp +
+        textarea.textContent.slice(textarea.selectionStart);
+      textarea.selectionStart = corret + 1;
     }
   } else {
     if (flagShift) {
@@ -443,23 +648,23 @@ function keyDownListener(event) {
       let additionalKey = document.querySelector(
         `.button-key[data-id="${event.keyCode}"] .button-key__spanUp`
       );
-      
-      if(additionalKey){
+
+      if (additionalKey) {
         letter = additionalKey;
-      }else{
+      } else {
         letter = document.querySelector(
           `.button-key[data-id="${event.keyCode}"] .button-key__span`
         );
       }
-      let toUp = letter.innerHTML;
+      let toUp = letter.textContent;
       if (letter.classList.contains('capslock')) {
         toUp = toUp.toUpperCase();
-      }   
+      }
       corret = textarea.selectionStart;
-      textarea.innerHTML =
-        textarea.innerHTML.slice(0, textarea.selectionStart) +
+      textarea.textContent =
+        textarea.textContent.slice(0, textarea.selectionStart) +
         toUp +
-        textarea.innerHTML.slice(textarea.selectionStart);
+        textarea.textContent.slice(textarea.selectionStart);
       textarea.selectionStart = corret + 1;
     } else {
       document
@@ -468,36 +673,38 @@ function keyDownListener(event) {
       let letter = document.querySelector(
         `.button-key[data-id="${event.keyCode}"] .button-key__span`
       );
+
       corret = textarea.selectionStart;
-      let toUp = letter.innerHTML;
+      let toUp = letter.textContent;
       if (letter.classList.contains('capslock')) {
         toUp = toUp.toUpperCase();
       }
-      textarea.innerHTML =
-        textarea.innerHTML.slice(0, textarea.selectionStart) +
+      textarea.textContent =
+        textarea.textContent.slice(0, textarea.selectionStart) +
         toUp +
-        textarea.innerHTML.slice(textarea.selectionStart);
+        textarea.textContent.slice(textarea.selectionStart);
       textarea.selectionStart = corret + 1;
     }
   }
 }
 
-function shiftAlt(el){
-    if (el.code === 'ShiftLeft' || el.code === 'ShiftRight') {
-      document
-        .querySelector(`.button-key[data-id="${el.code}"]`)
-        .classList.add('active_button');
-      if (lang === 'rus') {
-        lang = 'en';
-      } else if (lang === 'en') {
-        lang = 'rus';
-      }
-      window.removeEventListener('keydown', keyDownListener);
-      changeLanguage(lang);
-    } else {
-      window.removeEventListener('keydown', keyDownListener);
+function shiftAlt(el) {
+  if (el.code === 'ShiftLeft' || el.code === 'ShiftRight') {
+    document
+      .querySelector(`.button-key[data-id="${el.code}"]`)
+      .classList.add('active_button');
+    let changeLang = lang;
+    if (changeLang === 'rus') {
+      lang = 'en';
+    } else if (changeLang === 'en') {
+      lang = 'rus';
     }
-    flagAlt = false;
+    window.removeEventListener('keydown', keyDownListener);
+    changeLanguage(lang);
+  } else {
+    window.removeEventListener('keydown', keyDownListener);
+  }
+  flagAlt = false;
 }
 window.addEventListener('keydown', keyDownListener);
 window.addEventListener('keyup', function (event) {
@@ -510,14 +717,15 @@ window.addEventListener('keyup', function (event) {
     letters.forEach(function (element) {
       element.classList.toggle('capslock');
     });
-    if(lang === 'rus') {
+    if (lang === 'rus') {
       keyTilda.innerHTML = '`';
       keyСomma.innerHTML = ',';
       keyPoint.innerHTML = '.';
       keySlash.innerHTML = '/';
-      }
+    }
     document
-    .querySelector(`.button-key[data-id="${event.code}"]`).classList.remove('active_button_shift');
+      .querySelector(`.button-key[data-id="${event.code}"]`)
+      .classList.remove('active_button_shift');
   }
 });
 
@@ -532,4 +740,10 @@ textarea.addEventListener(
   },
   false
 );
-//document.querySelector('.button-key__span').style.textTransform  = 'uppercase';
+buttonKey.forEach((element) => {
+  if(!element.classList.contains('button__i-4__j-6')){
+  element.addEventListener('mousedown', clickListener);
+  element.addEventListener('mouseup', function () {
+    element.classList.remove('active_button');
+  });}
+});
